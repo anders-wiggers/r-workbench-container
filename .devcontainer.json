@@ -6,9 +6,6 @@
         },
         "ghcr.io/rocker-org/devcontainer-features/rstudio-server": {}
     },
-    "postAttachCommand": {
-        "rstudio-start": "rserver"
-    },
     "forwardPorts": [
         8787
     ],
