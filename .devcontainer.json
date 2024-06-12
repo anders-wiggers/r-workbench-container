@@ -1,0 +1,6 @@
+{
+  "forwardPorts": [8787, "8787:8787"],
+  "features": {
+    "ghcr.io/rocker-org/devcontainer-features/rstudio-server:0": {}
+  }
+}
