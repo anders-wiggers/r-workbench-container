@@ -1,7 +1,17 @@
 {
-  "image": "mcr.microsoft.com/devcontainers/python:3",
-  "forwardPorts": [8787, "8787:8787"],
-  "features": {
-    "ghcr.io/rocker-org/devcontainer-features/rstudio-server:0": {}
-  }
+    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+    "features": {
+        "ghcr.io/rocker-org/devcontainer-features/rstudio-server": {}
+    },
+    "postAttachCommand": {
+        "rstudio-start": "rserver"
+    },
+    "forwardPorts": [
+        8787
+    ],
+    "portsAttributes": {
+        "8787": {
+            "label": "RStudio IDE"
+        }
+    }
 }
