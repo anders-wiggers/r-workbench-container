@@ -1,6 +1,9 @@
 {
-    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+    "image": "ghcr.io/rocker-org/devcontainer/r-ver:4",
     "features": {
+        "ghcr.io/rocker-org/devcontainer-features/apt-packages:1": {
+            "packages": "jq"
+        },
         "ghcr.io/rocker-org/devcontainer-features/rstudio-server": {}
     },
     "postAttachCommand": {
