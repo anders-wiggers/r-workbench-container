@@ -1,0 +1,64 @@
+version: v2beta1
+name: r-demo
+
+vars:
+  IDE_IMAGE: "rocker/rstudio:4.4"
+  PROJECT: "r-demo"
+
+# This is a list of `deployments` that DevSpace can create for this project
+deployments:
+  r-demo:
+    # This deployment uses `helm` but you can also define `kubectl` deployments or kustomizations
+    helm:
+      chart:
+        name: component-chart
+        repo: https://charts.devspace.sh
+      values:
+        automountServiceAccountToken: false
+        containers:
+        - image: ${IDE_IMAGE}
+          name: ${PROJECT}
+          resources:
+            requests:
+              cpu: 0.5
+              memory: 3Gi
+            limits:
+              cpu: 1
+              memory: 6Gi
+
+# This is a list of `dev` containers that are based on the containers created by your deployments
+dev:
+  r-demo:
+    # Search for the container that runs this image
+    imageSelector: ${IDE_IMAGE}
+    open:
+    - url: http://localhost:8787
+    ports:
+    - port: 8787:8787
+    sync:
+      - path: .:/home/rstudio/${PROJECT}
+        onUpload:
+          exec:
+          - command: |-
+              chown -R rstudio:rstudio /home/rstudio/${PROJECT}
+          - command: |-
+              echo '{"save_workspace": "never","always_save_history": false,"reuse_sessions_for_project_links": true,"posix_terminal_shell": "bash","initial_working_directory": "/home/rstudio/${PROJECT}"}' > /home/rstudio/.config/rstudio/rstudio-prefs.json
+        initialSync: preferLocal
+        waitInitialSync: true
+        startContainer: true
+    env:
+    - name: USER
+      value: "rstudio"
+    ssh:
+      localHostname: ${PROJECT}.devspace
+    command: ["/usr/lib/rstudio-server/bin/rserver"]
+    args: ["--server-daemonize=0","--auth-none=1"]
+
+commands:
+  setup: |-
+    chown -R rstudio:rstudio /home/rstudio/${PROJECT}
+
+pipelines:
+  dev: |-
+    # Deploy the application and then start dev
+    run_default_pipeline dev
