@@ -53,6 +53,8 @@ dev:
       localHostname: ${PROJECT}.devspace
     command: ["/usr/lib/rstudio-server/bin/rserver"]
     args: ["--server-daemonize=0","--auth-none=1"]
+    proxyCommands:
+    - gitCredentials: true
 
 commands:
   setup: |-
