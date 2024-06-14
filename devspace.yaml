@@ -26,10 +26,8 @@ deployments:
               cpu: 1
               memory: 6Gi
 
-# This is a list of `dev` containers that are based on the containers created by your deployments
 dev:
   r-demo:
-    # Search for the container that runs this image
     imageSelector: ${IDE_IMAGE}
     open:
     - url: http://localhost:8787
@@ -45,18 +43,11 @@ dev:
               echo '{"save_workspace": "never","always_save_history": false,"reuse_sessions_for_project_links": true,"posix_terminal_shell": "bash","initial_working_directory": "/home/rstudio/${PROJECT}"}' > /home/rstudio/.config/rstudio/rstudio-prefs.json
         initialSync: preferLocal
         waitInitialSync: true
-        # startContainer: true
     env:
-    # - name: USER
-    #   value: "rstudio"
     - name: DISABLE_AUTH
       value: "true"
     ssh:
       localHostname: ${PROJECT}.devspace
-    # command: ["/usr/lib/rstudio-server/bin/rserver"]
-    # args: ["--server-daemonize=0","--auth-none=1"]
-    # proxyCommands:
-    # - gitCredentials: true
 
 commands:
   setup: |-
